@@ -133,4 +133,85 @@ public class CampoTeste {
 
 		assertTrue(campo22.isAberto() && campo11.isFechado());
 	}
+
+	@Test
+	void testeCampoDesvendado() {
+		campo.abrir();
+		assertTrue(campo.objetivoAlcancado());
+	}
+
+	@Test
+	void testeCampoProtegido() {
+		campo.minar();
+		campo.alternarMarcacao();
+		assertTrue(campo.objetivoAlcancado());
+	}
+
+	@Test
+	void testeMinasNaVizinhanca() {
+		Campo vizinho1 = new Campo(4, 3);
+		campo.adicionarVizinho(vizinho1);
+		vizinho1.minar();
+
+		Campo vizinho2 = new Campo(3, 2);
+		campo.adicionarVizinho(vizinho2);
+		vizinho2.minar();
+
+		Campo vizinho3 = new Campo(3, 4);
+		campo.adicionarVizinho(vizinho3);
+		vizinho3.minar();
+
+		long resultado = campo.minasNaVizinhanca();
+		assertTrue(resultado == 3);
+	}
+
+	@Test
+	void testeToStringMarcado() {
+		campo.alternarMarcacao();
+		assertTrue("x".equals(campo.toString()));
+	}
+
+	@Test
+	void testeToStringAbertoMinado() {
+		campo.abrir();
+		campo.minar();
+		assertTrue("*".equals(campo.toString()));
+	}
+
+	@Test
+	void testeToStringAbertoMinasNaVizinhanca() {
+		Campo vizinho1 = new Campo(4, 3);
+		campo.adicionarVizinho(vizinho1);
+		vizinho1.minar();
+
+		Campo vizinho2 = new Campo(3, 2);
+		campo.adicionarVizinho(vizinho2);
+		vizinho2.minar();
+
+		Campo vizinho3 = new Campo(3, 4);
+		campo.adicionarVizinho(vizinho3);
+		vizinho3.minar();
+
+		campo.abrir();
+		assertTrue("3".equals(campo.toString()));
+
+	}
+
+	@Test
+	void testeToStringAberto() {
+		campo.abrir();
+		assertTrue(" ".equals(campo.toString()));
+	}
+
+	@Test
+	void testeToStringIncognita() {
+		assertTrue("?".equals(campo.toString()));
+	}
+
+	@Test
+	void testeReiniciar() {
+		campo.reiniciar();
+		assertFalse(campo.isAberto() && campo.isMarcado() && campo.isMinado());
+	}
+
 }
